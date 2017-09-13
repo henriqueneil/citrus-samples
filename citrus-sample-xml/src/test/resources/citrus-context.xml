@@ -1,0 +1,31 @@
+<spring:beans
+	xmlns:citrus-jms="http://www.citrusframework.org/schema/jms/config"
+	xmlns:citrus-http="http://www.citrusframework.org/schema/http/config"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:spring="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.citrusframework.org/schema/jms/config
+		http://www.citrusframework.org/schema/jms/config/citrus-jms-config.xsd
+		http://www.citrusframework.org/schema/http/config
+		http://www.citrusframework.org/schema/http/config/citrus-http-config.xsd">
+	
+	<citrus-http:client id="httpClient"
+						charset="UTF-8"
+						content-type="application/json"
+						request-url="http://127.0.0.1:1501/api/"/>
+	
+	<citrus-http:server id="httpServer"
+						auto-start="true"
+						port="1501"
+						timeout="5000"/>
+	
+	<citrus-jms:endpoint id="InputQueue"
+						 destination-name="adapter.jde.load.v1.publish.load" />
+	
+	<spring:bean class="com.consol.citrus.admin.connector.WebSocketPushEventsListener">
+		<spring:property name="host" value="127.0.0.1" />
+		<spring:property name="port" value="8080" />
+	</spring:bean>
+	
+</spring:beans>
